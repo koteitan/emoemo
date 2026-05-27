@@ -459,3 +459,28 @@ section {
 .footer a:hover {
   color: var(--accent);
 }
+
+/* --- mobile header: keep PC layout, fix the cramped vertical nav --- */
+@media (max-width: 640px) {
+  .header {
+    gap: 0.5rem 0.75rem;
+    padding: 0.6rem 0.8rem;
+  }
+  /* row 1: brand (left) + lang/login (right) */
+  .header-right {
+    order: 2;
+    margin-left: auto;
+  }
+  /* row 2: nav takes the full width and wraps as chips instead of breaking
+     each label character-by-character */
+  .nav {
+    order: 3;
+    flex: 1 0 100%;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .nav a {
+    white-space: nowrap;
+    background: var(--surface-2);
+  }
+}
