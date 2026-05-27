@@ -152,6 +152,32 @@ h2 {
 .muted {
   color: var(--muted);
 }
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 0;
+  color: var(--muted);
+}
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+.spinner.small {
+  width: 14px;
+  height: 14px;
+  border-width: 2px;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .status {
   color: var(--accent);
   margin-left: 0.6rem;

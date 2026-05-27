@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { fetchUserPacks, type EmojiPack } from '../nostr/emoji';
 import PackCard from '../components/PackCard';
+import Loading from '../components/Loading';
 
 export default function MyPacks() {
   const { t } = useTranslation();
@@ -31,7 +32,7 @@ export default function MyPacks() {
         </Link>
       </div>
       {loading ? (
-        <p className="muted">{t('common.loading')}</p>
+        <Loading text={t('common.loading')} />
       ) : packs.length === 0 ? (
         <p className="muted">{t('pack.noPacks')}</p>
       ) : (

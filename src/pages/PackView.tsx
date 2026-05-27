@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { fetchPack, type EmojiPack } from '../nostr/emoji';
 import { browseRelays } from '../nostr/relays';
@@ -7,10 +7,12 @@ import { useAuth } from '../context/AuthContext';
 import { useEmojiList } from '../context/EmojiListContext';
 import { useProfiles, profileName } from '../context/ProfilesContext';
 import EmojiGrid from '../components/EmojiGrid';
+import Loading from '../components/Loading';
 import { shortNpub } from '../nostr/nip19';
 
 export default function PackView() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const params = useParams();
   const pubkey = params.pubkey!;
   const identifier = decodeURIComponent(params.identifier!);
@@ -34,13 +36,20 @@ export default function PackView() {
     ensure([pubkey]);
   }, [pubkey, ensure]);
 
-  if (loading) return <p className="muted">{t('common.loading')}</p>;
+  if (loading) return <Loading text={t('common.loading')} />;
   if (!pack) return <p className="muted">{t('pack.notFound')}</p>;
 
   const ref = { pubkey, identifier };
   const inList = list.isPackInList(ref);
   const isOwner = me === pubkey;
   const author = profileName(get(pubkey), shortNpub(pubkey));
+
+  function duplicate() {
+    if (!pack) return;
+    navigate('/pack/new', {
+      state: { fork: { title: pack.title + t('pack.copySuffix'), emojis: pack.emojis } },
+    });
+  }
 
   async function toggleList() {
     if (!me) return;
@@ -84,6 +93,11 @@ export default function PackView() {
             >
               {t('common.edit')}
             </Link>
+          )}
+          {me && (
+            <button className="btn-ghost" onClick={duplicate}>
+              {t('pack.duplicate')}
+            </button>
           )}
         </div>
       </div>

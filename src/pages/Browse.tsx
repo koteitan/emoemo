@@ -12,6 +12,7 @@ import { browseRelays } from '../nostr/relays';
 import { useAuth } from '../context/AuthContext';
 import { useProfiles } from '../context/ProfilesContext';
 import PackCard from '../components/PackCard';
+import Loading from '../components/Loading';
 
 function mergePacks(base: EmojiPack[], add: EmojiPack[]): EmojiPack[] {
   const map = new Map<string, EmojiPack>();
@@ -105,11 +106,11 @@ export default function Browse() {
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t('browse.searchPlaceholder')}
         />
-        {searching && <span className="muted">{t('browse.loading')}</span>}
+        {searching && <span className="spinner small" aria-hidden="true" />}
       </div>
 
       {loading ? (
-        <p className="muted">{t('browse.loading')}</p>
+        <Loading text={t('browse.loading')} />
       ) : shown.length === 0 ? (
         <p className="muted">{t('browse.noResults')}</p>
       ) : (

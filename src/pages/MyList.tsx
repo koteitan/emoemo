@@ -6,6 +6,7 @@ import { useEmojiList } from '../context/EmojiListContext';
 import { fetchPacksByRefs, type EmojiPack } from '../nostr/emoji';
 import EmojiEditor from '../components/EmojiEditor';
 import { EmojiImg } from '../components/EmojiGrid';
+import Loading from '../components/Loading';
 
 export default function MyList() {
   const { t } = useTranslation();
@@ -25,7 +26,7 @@ export default function MyList() {
   }, [list.loaded, list.packRefs, readRelays]);
 
   if (!pubkey) return <p className="muted">{t('auth.loginRequired')}</p>;
-  if (!list.loaded) return <p className="muted">{t('common.loading')}</p>;
+  if (!list.loaded) return <Loading text={t('common.loading')} />;
 
   async function onSave() {
     setSaving(true);

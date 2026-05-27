@@ -7,7 +7,7 @@
     "browse": "さがす",
     "myList": "自分が使うやつ",
     "myPacks": "自分が作ったやつ",
-    "newPack": "つくるよ"
+    "newPack": "自分で作るよ"
   },
   "auth": {
     "login": "ログイン",
@@ -54,7 +54,9 @@
     "count_other": "絵文字 {{count}} 個",
     "empty": "このパックには絵文字がありません。",
     "notFound": "パックが見つかりません。",
-    "noPacks": "まだパックを作成していません。"
+    "noPacks": "まだパックを作成していません。",
+    "duplicate": "複製して自分用に",
+    "copySuffix": " のコピー"
   },
   "upload": {
     "button": "画像をアップロード",

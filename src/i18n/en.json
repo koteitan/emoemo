@@ -54,7 +54,9 @@
     "count_other": "{{count}} emoji",
     "empty": "This pack has no emoji.",
     "notFound": "Pack not found.",
-    "noPacks": "You haven't created any packs yet."
+    "noPacks": "You haven't created any packs yet.",
+    "duplicate": "Duplicate to my own",
+    "copySuffix": " copy"
   },
   "upload": {
     "button": "Upload image",
