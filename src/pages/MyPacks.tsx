@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { fetchUserPacks, type EmojiPack } from '../nostr/emoji';
@@ -25,12 +24,7 @@ export default function MyPacks() {
 
   return (
     <div>
-      <div className="page-head">
-        <h1>{t('nav.myPacks')}</h1>
-        <Link to="/pack/new" className="btn">
-          + {t('nav.newPack')}
-        </Link>
-      </div>
+      <h1>{t('nav.myPacks')}</h1>
       {loading ? (
         <Loading text={t('common.loading')} />
       ) : packs.length === 0 ? (

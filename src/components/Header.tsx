@@ -5,7 +5,7 @@ import { shortNpub } from '../nostr/nip19';
 
 export default function Header() {
   const { t, i18n } = useTranslation();
-  const { pubkey, profile, hasExtension, loading, login, logout } = useAuth();
+  const { pubkey, profile, hasExtension, loading, error, login, logout } = useAuth();
 
   const toggleLang = () => i18n.changeLanguage(i18n.language.startsWith('ja') ? 'en' : 'ja');
 
@@ -40,9 +40,19 @@ export default function Header() {
             </button>
           </div>
         ) : (
-          <button className="btn" disabled={!hasExtension || loading} onClick={login}>
-            {loading ? t('common.loading') : t('auth.login')}
-          </button>
+          <div className="login-box">
+            <button
+              className="btn"
+              disabled={loading}
+              onClick={login}
+              title={hasExtension ? undefined : t('auth.noExtension')}
+            >
+              {loading ? t('common.loading') : t('auth.login')}
+            </button>
+            {(error || !hasExtension) && (
+              <span className="login-hint">{error ?? t('auth.noExtension')}</span>
+            )}
+          </div>
         )}
       </div>
     </header>

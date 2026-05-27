@@ -4,10 +4,10 @@
     "tagline": "Nostr カスタム絵文字マネージャー"
   },
   "nav": {
-    "browse": "さがす",
+    "browse": "他人のをさがす",
     "myList": "自分が使うやつ",
     "myPacks": "自分が作ったやつ",
-    "newPack": "自分で作るよ"
+    "newPack": "自分で新しく作る"
   },
   "auth": {
     "login": "ログイン",

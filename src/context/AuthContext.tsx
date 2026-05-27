@@ -12,6 +12,7 @@ interface AuthState {
   writeRelays: string[];
   loading: boolean;
   hasExtension: boolean;
+  error: string | null;
   login: () => Promise<void>;
   logout: () => void;
 }
@@ -26,6 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [relays, setRelays] = useState<RelayEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasExtension, setHasExtension] = useState(hasNip07());
+  const [error, setError] = useState<string | null>(null);
 
   async function hydrate(pk: string) {
     setPubkey(pk);
@@ -38,10 +40,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function login() {
     setLoading(true);
+    setError(null);
     try {
       const pk = await loginNip07();
       localStorage.setItem(STORAGE_KEY, '1');
       await hydrate(pk);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'login failed');
     } finally {
       setLoading(false);
     }
@@ -90,10 +95,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       writeRelays: relays.length ? writeRelays(relays) : fallbackRelays(),
       loading,
       hasExtension,
+      error,
       login,
       logout,
     }),
-    [pubkey, profile, relays, loading, hasExtension],
+    [pubkey, profile, relays, loading, hasExtension, error],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

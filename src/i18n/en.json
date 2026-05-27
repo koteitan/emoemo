@@ -4,10 +4,10 @@
     "tagline": "Nostr custom emoji manager"
   },
   "nav": {
-    "browse": "Browse",
-    "myList": "My emoji",
-    "myPacks": "My packs",
-    "newPack": "New pack"
+    "browse": "Find others' packs",
+    "myList": "Emoji I use",
+    "myPacks": "Packs I made",
+    "newPack": "Create a pack"
   },
   "auth": {
     "login": "Log in",

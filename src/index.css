@@ -96,6 +96,19 @@ h2 {
   align-items: center;
   gap: 0.5rem;
 }
+.login-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+.login-hint {
+  font-size: 0.72rem;
+  color: var(--muted);
+  max-width: 220px;
+  text-align: right;
+  line-height: 1.3;
+}
 .avatar {
   width: 28px;
   height: 28px;
