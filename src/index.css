@@ -463,24 +463,30 @@ section {
 /* --- mobile header: keep PC layout, fix the cramped vertical nav --- */
 @media (max-width: 640px) {
   .header {
-    gap: 0.5rem 0.75rem;
+    gap: 0.5rem 0.6rem;
     padding: 0.6rem 0.8rem;
   }
-  /* row 1: brand (left) + lang/login (right) */
+  /* row 1: emoemo  EN  [icon]  logout (all on one line) */
   .header-right {
     order: 2;
     margin-left: auto;
   }
-  /* row 2: nav takes the full width and wraps as chips instead of breaking
-     each label character-by-character */
+  .user-name {
+    display: none; /* icon only on mobile */
+  }
+  /* row 2: nav as a 2x2 grid of equal-width buttons */
   .nav {
     order: 3;
     flex: 1 0 100%;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 0.4rem;
   }
   .nav a {
+    text-align: center;
     white-space: nowrap;
     background: var(--surface-2);
+    padding: 0.5rem 0.4rem;
+    font-size: 0.9rem;
   }
 }
