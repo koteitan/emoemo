@@ -365,6 +365,15 @@ input:focus {
   object-fit: contain;
   image-rendering: auto;
 }
+.emoji-broken {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-2);
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
 .emoji-code {
   font-size: 0.7rem;
   color: var(--muted);

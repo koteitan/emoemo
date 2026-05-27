@@ -1,6 +1,18 @@
 import type { Emoji } from '../nostr/emoji';
+import { isSafeImageUrl } from '../util/url';
 
 export function EmojiImg({ emoji, size = 36 }: { emoji: Emoji; size?: number }) {
+  if (!isSafeImageUrl(emoji.url)) {
+    return (
+      <span
+        className="emoji-img emoji-broken"
+        title={`:${emoji.shortcode}:`}
+        style={{ width: size, height: size }}
+      >
+        ?
+      </span>
+    );
+  }
   return (
     <img
       className="emoji-img"

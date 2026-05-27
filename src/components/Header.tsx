@@ -2,6 +2,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { shortNpub } from '../nostr/nip19';
+import { isSafeImageUrl } from '../util/url';
 
 export default function Header() {
   const { t, i18n } = useTranslation();
@@ -31,7 +32,9 @@ export default function Header() {
         </button>
         {pubkey ? (
           <div className="user">
-            {profile?.picture && <img className="avatar" src={profile.picture} alt="" />}
+            {isSafeImageUrl(profile?.picture) && (
+              <img className="avatar" src={profile?.picture} alt="" />
+            )}
             <span className="user-name">
               {profile?.display_name || profile?.name || shortNpub(pubkey)}
             </span>
