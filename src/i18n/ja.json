@@ -1,0 +1,74 @@
+{
+  "app": {
+    "title": "emoemo",
+    "tagline": "Nostr カスタム絵文字マネージャー"
+  },
+  "nav": {
+    "browse": "さがす",
+    "myList": "マイ絵文字",
+    "myPacks": "マイパック",
+    "newPack": "新規パック"
+  },
+  "auth": {
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "loginWithExtension": "拡張機能でログイン (NIP-07)",
+    "noExtension": "NIP-07 拡張機能が見つかりません。Alby や nos2x などを入れてください。",
+    "loginRequired": "絵文字を編集するにはログインしてください。"
+  },
+  "browse": {
+    "title": "絵文字パックをさがす",
+    "searchPlaceholder": "パックを検索...",
+    "search": "検索",
+    "recent": "最近のパック",
+    "noResults": "パックが見つかりませんでした。",
+    "loading": "パックを読み込み中..."
+  },
+  "list": {
+    "title": "マイ絵文字リスト",
+    "standalone": "個別の絵文字",
+    "packs": "リストに入っているパック",
+    "empty": "絵文字リストは空です。",
+    "addEmoji": "絵文字を追加",
+    "save": "リストを保存 (kind:10030)",
+    "saved": "絵文字リストを保存しました。",
+    "removePack": "リストから外す",
+    "inList": "リストに追加済み",
+    "addToList": "マイリストに追加"
+  },
+  "pack": {
+    "title": "タイトル",
+    "identifier": "識別子 (d)",
+    "identifierHint": "パックの一意なID。既存パックを更新する場合はそのままにしてください。",
+    "emojis": "絵文字",
+    "shortcode": "ショートコード",
+    "url": "画像URL",
+    "addEmoji": "絵文字を追加",
+    "remove": "削除",
+    "save": "パックを保存 (kind:30030)",
+    "saved": "パックを保存しました。",
+    "newTitle": "新しい絵文字パック",
+    "editTitle": "絵文字パックを編集",
+    "by": "作成者",
+    "count_one": "絵文字 {{count}} 個",
+    "count_other": "絵文字 {{count}} 個",
+    "empty": "このパックには絵文字がありません。",
+    "notFound": "パックが見つかりません。",
+    "noPacks": "まだパックを作成していません。"
+  },
+  "upload": {
+    "button": "画像をアップロード",
+    "uploading": "アップロード中...",
+    "orUrl": "または画像URLを貼り付け",
+    "failed": "アップロードに失敗しました"
+  },
+  "common": {
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました。",
+    "publishing": "公開中...",
+    "publishedTo": "{{count}} 個のリレーに公開しました",
+    "cancel": "キャンセル",
+    "edit": "編集",
+    "open": "開く"
+  }
+}

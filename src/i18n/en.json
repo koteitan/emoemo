@@ -1,0 +1,74 @@
+{
+  "app": {
+    "title": "emoemo",
+    "tagline": "Nostr custom emoji manager"
+  },
+  "nav": {
+    "browse": "Browse",
+    "myList": "My emoji",
+    "myPacks": "My packs",
+    "newPack": "New pack"
+  },
+  "auth": {
+    "login": "Log in",
+    "logout": "Log out",
+    "loginWithExtension": "Log in with extension (NIP-07)",
+    "noExtension": "No NIP-07 extension found. Install Alby, nos2x, etc.",
+    "loginRequired": "Log in to edit your emoji."
+  },
+  "browse": {
+    "title": "Browse emoji packs",
+    "searchPlaceholder": "Search packs...",
+    "search": "Search",
+    "recent": "Recent packs",
+    "noResults": "No packs found.",
+    "loading": "Loading packs..."
+  },
+  "list": {
+    "title": "My emoji list",
+    "standalone": "Individual emoji",
+    "packs": "Emoji packs in my list",
+    "empty": "Your emoji list is empty.",
+    "addEmoji": "Add emoji",
+    "save": "Save list (kind:10030)",
+    "saved": "Emoji list saved.",
+    "removePack": "Remove from list",
+    "inList": "In your list",
+    "addToList": "Add to my list"
+  },
+  "pack": {
+    "title": "Title",
+    "identifier": "Identifier (d)",
+    "identifierHint": "Unique id for this pack. Leave as is to update an existing pack.",
+    "emojis": "Emoji",
+    "shortcode": "Shortcode",
+    "url": "Image URL",
+    "addEmoji": "Add emoji",
+    "remove": "Remove",
+    "save": "Save pack (kind:30030)",
+    "saved": "Pack saved.",
+    "newTitle": "New emoji pack",
+    "editTitle": "Edit emoji pack",
+    "by": "by",
+    "count_one": "{{count}} emoji",
+    "count_other": "{{count}} emoji",
+    "empty": "This pack has no emoji.",
+    "notFound": "Pack not found.",
+    "noPacks": "You haven't created any packs yet."
+  },
+  "upload": {
+    "button": "Upload image",
+    "uploading": "Uploading...",
+    "orUrl": "or paste an image URL",
+    "failed": "Upload failed"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong.",
+    "publishing": "Publishing...",
+    "publishedTo": "Published to {{count}} relays",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "open": "Open"
+  }
+}
