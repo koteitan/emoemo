@@ -25,8 +25,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [relays, setRelays] = useState<RelayEntry[]>([]);
   const [loading, setLoading] = useState(false);
-
-  const hasExtension = hasNip07();
+  const [hasExtension, setHasExtension] = useState(hasNip07());
 
   async function hydrate(pk: string) {
     setPubkey(pk);
@@ -55,17 +54,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setRelays([]);
   }
 
-  // Auto re-login if the user logged in before and the extension is present.
+  // NIP-07 extensions often inject window.nostr after React mounts, so poll for
+  // it for a few seconds instead of checking only once.
   useEffect(() => {
-    if (localStorage.getItem(STORAGE_KEY) === '1' && hasNip07()) {
-      setLoading(true);
-      loginNip07()
-        .then(hydrate)
-        .catch(() => localStorage.removeItem(STORAGE_KEY))
-        .finally(() => setLoading(false));
-    }
+    if (hasExtension) return;
+    let tries = 0;
+    const id = setInterval(() => {
+      if (hasNip07()) {
+        setHasExtension(true);
+        clearInterval(id);
+      } else if (++tries > 20) {
+        clearInterval(id);
+      }
+    }, 200);
+    return () => clearInterval(id);
+  }, [hasExtension]);
+
+  // Auto re-login once the extension is available and the user logged in before.
+  useEffect(() => {
+    if (!hasExtension || pubkey || localStorage.getItem(STORAGE_KEY) !== '1') return;
+    setLoading(true);
+    loginNip07()
+      .then(hydrate)
+      .catch(() => localStorage.removeItem(STORAGE_KEY))
+      .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [hasExtension]);
 
   const value = useMemo<AuthState>(
     () => ({

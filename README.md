@@ -35,3 +35,7 @@ GitHub Pages に公開します。初回のみ Pages のビルドソースを Ac
 ```sh
 gh api repos/koteitan/emoemo/pages -X POST -f build_type=workflow
 ```
+
+## License
+
+[MIT](LICENSE) © koteitan

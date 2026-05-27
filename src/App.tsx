@@ -20,6 +20,15 @@ export default function App() {
           <Route path="/pack/:pubkey/:identifier/edit" element={<PackEdit mode="edit" />} />
         </Routes>
       </main>
+      <footer className="footer">
+        <a
+          href="https://github.com/koteitan/emoemo"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          GitHub: koteitan/emoemo
+        </a>
+      </footer>
     </>
   );
 }
