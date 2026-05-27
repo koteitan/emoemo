@@ -8,7 +8,6 @@ import {
   type EmojiPack,
 } from '../nostr/emoji';
 import { searchProfiles } from '../nostr/profile';
-import { browseRelays } from '../nostr/relays';
 import { useAuth } from '../context/AuthContext';
 import { useProfiles } from '../context/ProfilesContext';
 import PackCard from '../components/PackCard';
@@ -34,10 +33,8 @@ export default function Browse() {
   const [searching, setSearching] = useState(false);
   const searchSeq = useRef(0);
 
-  const relays = useMemo(
-    () => [...new Set([...browseRelays(), ...readRelays])],
-    [readRelays],
-  );
+  // Search/browse on the user's relay list (or fallback relays when logged out).
+  const relays = readRelays;
 
   // Initial recent packs.
   useEffect(() => {

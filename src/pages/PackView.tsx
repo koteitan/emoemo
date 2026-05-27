@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { fetchPack, type EmojiPack } from '../nostr/emoji';
-import { browseRelays } from '../nostr/relays';
 import { useAuth } from '../context/AuthContext';
 import { useEmojiList } from '../context/EmojiListContext';
 import { useProfiles, profileName } from '../context/ProfilesContext';
@@ -25,8 +24,7 @@ export default function PackView() {
 
   useEffect(() => {
     setLoading(true);
-    const relays = [...new Set([...browseRelays(), ...readRelays])];
-    fetchPack({ pubkey, identifier }, relays).then((p) => {
+    fetchPack({ pubkey, identifier }, readRelays).then((p) => {
       setPack(p);
       setLoading(false);
     });

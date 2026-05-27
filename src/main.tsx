@@ -5,13 +5,13 @@ import './i18n';
 import './index.css';
 import App from './App';
 import { rxNostr } from './nostr/core';
-import { browseRelays } from './nostr/relays';
+import { fallbackRelays } from './nostr/relays';
 import { AuthProvider } from './context/AuthContext';
 import { EmojiListProvider } from './context/EmojiListContext';
 import { ProfilesProvider } from './context/ProfilesContext';
 
 // Default relays for unauthenticated browsing; per-request relays override these.
-rxNostr.setDefaultRelays(browseRelays());
+rxNostr.setDefaultRelays(fallbackRelays());
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

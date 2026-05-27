@@ -8,7 +8,6 @@ import {
   type ReactNode,
 } from 'react';
 import { fetchProfiles, type Profile } from '../nostr/profile';
-import { browseRelays } from '../nostr/relays';
 import { useAuth } from './AuthContext';
 
 interface ProfilesState {
@@ -40,8 +39,7 @@ export function ProfilesProvider({ children }: { children: ReactNode }) {
     const batch = [...queueRef.current];
     queueRef.current.clear();
     if (batch.length === 0) return;
-    const relays = [...new Set([...browseRelays(), ...readRelays])];
-    fetchProfiles(batch, relays).then((found) => {
+    fetchProfiles(batch, readRelays).then((found) => {
       // Mark all requested as known even if no profile came back (avoid refetch loops).
       for (const pk of batch) knownRef.current.add(pk);
       merge(found);

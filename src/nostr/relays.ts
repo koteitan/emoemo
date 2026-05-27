@@ -1,4 +1,8 @@
 // Relay configuration and relay-list resolution (per project nostr rules).
+//
+// Flow: fetch the user's kind:10002 relay list from the bootstrap relays, then
+// use that list for searching packs, reading the user's emoji, and all writes.
+// If there is no kind:10002 (and no kind:3) event, fall back to FALLBACK_RELAYS.
 
 export const BOOTSTRAP_RELAYS = [
   'wss://directory.yabu.me',
@@ -7,30 +11,20 @@ export const BOOTSTRAP_RELAYS = [
   'wss://indexer.coracle.social',
 ];
 
-const FALLBACK_RELAYS_JA = [
+const FALLBACK_RELAYS = [
+  'wss://r.kojira.io',
+  'wss://relay.damus.io',
   'wss://yabu.me',
   'wss://nostr.compile-error.net',
-  'wss://r.kojira.io',
-  'wss://relay-jp.nostr.wirednet.jp',
+  'wss://nostr.bitcoiner.social',
   'wss://nrelay-jp.c-stellar.net',
+  'wss://relay.westernbtc.com',
   'wss://nostream.ocha.one',
+  'wss://relay-jp.nostr.wirednet.jp',
   'wss://snowflare.cc',
-];
-
-const FALLBACK_RELAYS_EN = [
-  'wss://relay.damus.io',
-  'wss://nostr-pub.wellorder.net',
-  'wss://offchain.pub',
-  'wss://relay.snort.social',
+  'wss://relay.primal.net',
 ];
 
 export function fallbackRelays(): string[] {
-  const locale = navigator.language || 'en';
-  return locale.startsWith('ja') ? FALLBACK_RELAYS_JA : FALLBACK_RELAYS_EN;
-}
-
-// Relays used for browsing/searching packs when the user is not logged in.
-// relay.nostr.band supports NIP-50 full-text search.
-export function browseRelays(): string[] {
-  return [...new Set(['wss://relay.nostr.band', ...fallbackRelays()])];
+  return [...FALLBACK_RELAYS];
 }
