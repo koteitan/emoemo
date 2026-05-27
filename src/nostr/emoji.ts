@@ -180,6 +180,15 @@ function dedupeReplaceable(events: NostrEvent[]): NostrEvent[] {
   return [...byCoord.values()];
 }
 
+// Client-side incremental match: title, emoji shortcode, or author name.
+export function packMatchesQuery(pack: EmojiPack, query: string, authorName = ''): boolean {
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  if (pack.title.toLowerCase().includes(q)) return true;
+  if (pack.emojis.some((e) => e.shortcode.toLowerCase().includes(q))) return true;
+  return authorName.toLowerCase().includes(q);
+}
+
 // --- event builders (tags only; signing/publishing happens in core) ---
 
 export function buildPackTags(pack: { identifier: string; title: string; emojis: Emoji[] }): string[][] {

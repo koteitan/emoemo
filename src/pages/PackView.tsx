@@ -21,6 +21,7 @@ export default function PackView() {
   const [pack, setPack] = useState<EmojiPack | null>(null);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState('');
+  const [emojiQuery, setEmojiQuery] = useState('');
 
   useEffect(() => {
     setLoading(true);
@@ -48,6 +49,12 @@ export default function PackView() {
       state: { fork: { title: pack.title + t('pack.copySuffix'), emojis: pack.emojis } },
     });
   }
+
+  // Incremental, display-only filter over this pack's emoji by shortcode.
+  const q = emojiQuery.trim().toLowerCase();
+  const filteredEmojis = q
+    ? pack.emojis.filter((e) => e.shortcode.toLowerCase().includes(q))
+    : pack.emojis;
 
   async function toggleList() {
     if (!me) return;
@@ -104,7 +111,21 @@ export default function PackView() {
       {pack.emojis.length === 0 ? (
         <p className="muted">{t('pack.empty')}</p>
       ) : (
-        <EmojiGrid emojis={pack.emojis} />
+        <>
+          <div className="search-bar">
+            <input
+              type="text"
+              value={emojiQuery}
+              onChange={(e) => setEmojiQuery(e.target.value)}
+              placeholder={t('pack.filterPlaceholder')}
+            />
+          </div>
+          {filteredEmojis.length === 0 ? (
+            <p className="muted">{t('browse.noResults')}</p>
+          ) : (
+            <EmojiGrid emojis={filteredEmojis} />
+          )}
+        </>
       )}
     </div>
   );

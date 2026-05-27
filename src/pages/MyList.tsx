@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { useEmojiList } from '../context/EmojiListContext';
-import { fetchPacksByRefs, type EmojiPack } from '../nostr/emoji';
+import { fetchPacksByRefs, packMatchesQuery, type EmojiPack } from '../nostr/emoji';
 import EmojiEditor from '../components/EmojiEditor';
 import { EmojiImg } from '../components/EmojiGrid';
 import Loading from '../components/Loading';
@@ -15,6 +15,7 @@ export default function MyList() {
   const [packs, setPacks] = useState<EmojiPack[]>([]);
   const [status, setStatus] = useState('');
   const [saving, setSaving] = useState(false);
+  const [query, setQuery] = useState('');
 
   // standalone emoji draft mirrors context state
   const [emojis, setEmojis] = useState(list.emojis);
@@ -48,11 +49,21 @@ export default function MyList() {
 
       <section>
         <h2>{t('list.packs')}</h2>
+        {packs.length > 0 && (
+          <div className="search-bar">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t('browse.searchPlaceholder')}
+            />
+          </div>
+        )}
         {packs.length === 0 ? (
           <p className="muted">{t('list.empty')}</p>
         ) : (
           <div className="pack-grid">
-            {packs.map((p) => (
+            {packs.filter((p) => packMatchesQuery(p, query)).map((p) => (
               <div key={`${p.pubkey}:${p.identifier}`} className="pack-card-wrap">
                 <Link
                   to={`/pack/${p.pubkey}/${encodeURIComponent(p.identifier)}`}

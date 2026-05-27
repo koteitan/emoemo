@@ -95,7 +95,10 @@ export default function Browse() {
 
   return (
     <div>
-      <h1>{t('browse.title')}</h1>
+      <h1>
+        {t('browse.title')}
+        <small className="title-note">{t('browse.searchTargets')}</small>
+      </h1>
       <div className="search-bar">
         <input
           type="text"
