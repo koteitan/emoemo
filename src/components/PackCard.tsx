@@ -1,12 +1,22 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { EmojiPack } from '../nostr/emoji';
 import { EmojiImg } from './EmojiGrid';
 import { shortNpub } from '../nostr/nip19';
+import { useProfiles, profileName } from '../context/ProfilesContext';
 
 export default function PackCard({ pack }: { pack: EmojiPack }) {
   const { t } = useTranslation();
+  const { get, ensure } = useProfiles();
   const to = `/pack/${pack.pubkey}/${encodeURIComponent(pack.identifier)}`;
+
+  useEffect(() => {
+    ensure([pack.pubkey]);
+  }, [pack.pubkey, ensure]);
+
+  const author = profileName(get(pack.pubkey), shortNpub(pack.pubkey));
+
   return (
     <Link to={to} className="pack-card">
       <div className="pack-card-head">
@@ -19,7 +29,7 @@ export default function PackCard({ pack }: { pack: EmojiPack }) {
         ))}
       </div>
       <div className="pack-by">
-        {t('pack.by')} {shortNpub(pack.pubkey)}
+        {t('pack.by')} {author}
       </div>
     </Link>
   );

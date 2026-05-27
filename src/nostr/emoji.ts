@@ -129,6 +129,18 @@ export async function fetchPacksByRefs(refs: PackRef[], relays: string[]): Promi
     .filter((p) => wanted.has(packCoordinate(p)));
 }
 
+export async function fetchPacksByAuthors(authors: string[], relays: string[]): Promise<EmojiPack[]> {
+  if (authors.length === 0) return [];
+  const unique = [...new Set(authors)];
+  const events = await fetchEvents([{ kinds: [KIND_EMOJI_SET], authors: unique }], {
+    relays,
+    timeoutMs: 6000,
+  });
+  return dedupeReplaceable(events)
+    .map(parsePack)
+    .filter((p) => p.emojis.length > 0);
+}
+
 // Browse recent emoji sets across relays.
 export async function fetchRecentPacks(relays: string[], limit = 100): Promise<EmojiPack[]> {
   const events = await fetchEvents([{ kinds: [KIND_EMOJI_SET], limit }], {

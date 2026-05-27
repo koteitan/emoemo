@@ -5,9 +5,9 @@
   },
   "nav": {
     "browse": "さがす",
-    "myList": "マイ絵文字",
-    "myPacks": "マイパック",
-    "newPack": "新規パック"
+    "myList": "自分が使うやつ",
+    "myPacks": "自分が作ったやつ",
+    "newPack": "つくるよ"
   },
   "auth": {
     "login": "ログイン",
