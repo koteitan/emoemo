@@ -5,6 +5,7 @@ import MyList from './pages/MyList';
 import MyPacks from './pages/MyPacks';
 import PackView from './pages/PackView';
 import PackEdit from './pages/PackEdit';
+import CopyItem from './pages/CopyItem';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/me" element={<MyList />} />
           <Route path="/me/packs" element={<MyPacks />} />
           <Route path="/pack/new" element={<PackEdit mode="new" />} />
+          <Route path="/pack/copyitem/:pubkey/:identifier" element={<CopyItem />} />
           <Route path="/pack/:pubkey/:identifier" element={<PackView />} />
           <Route path="/pack/:pubkey/:identifier/edit" element={<PackEdit mode="edit" />} />
         </Routes>
@@ -27,7 +29,8 @@ export default function App() {
           rel="noreferrer noopener"
         >
           GitHub: koteitan/emoemo
-        </a>
+        </a>{' '}
+        <span className="version">v{__APP_VERSION__}</span>
       </footer>
     </>
   );

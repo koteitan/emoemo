@@ -459,6 +459,80 @@ section {
 .footer a:hover {
   color: var(--accent);
 }
+.footer .version {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* --- copy individual items page --- */
+.copy-pack-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: 0.8rem;
+}
+.copy-pack-card {
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.copy-pack-card.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.copy-pack-card.selected:hover {
+  transform: none;
+}
+.copy-added-badge {
+  color: #0f1020;
+  background: #6ee7a8;
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.copy-arrow {
+  text-align: center;
+  font-size: 3rem;
+  line-height: 1;
+  color: var(--accent-2);
+  margin: 1.2rem 0;
+}
+.copy-emoji {
+  position: relative;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.copy-emoji:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+.copy-emoji.staged {
+  border-color: #6ee7a8;
+  box-shadow: 0 0 0 1px #6ee7a8;
+}
+.copy-emoji.done {
+  opacity: 0.5;
+  cursor: default;
+}
+.copy-check {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #6ee7a8;
+  color: #0f1020;
+  font-size: 0.7rem;
+  line-height: 16px;
+  text-align: center;
+}
 
 /* --- mobile header: keep PC layout, fix the cramped vertical nav --- */
 @media (max-width: 640px) {

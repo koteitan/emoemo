@@ -50,6 +50,15 @@ export default function PackView() {
     });
   }
 
+  function copyItem() {
+    if (!pack) return;
+    // Source pubkey/identifier live in the URL so the page survives a reload;
+    // the pack data is also passed via state to render instantly when arriving here.
+    navigate(`/pack/copyitem/${pubkey}/${encodeURIComponent(identifier)}`, {
+      state: { source: { pubkey, identifier, title: pack.title, emojis: pack.emojis } },
+    });
+  }
+
   // Incremental, display-only filter over this pack's emoji by shortcode.
   const q = emojiQuery.trim().toLowerCase();
   const filteredEmojis = q
@@ -102,6 +111,11 @@ export default function PackView() {
           {me && (
             <button className="btn-ghost" onClick={duplicate}>
               {t('pack.duplicate')}
+            </button>
+          )}
+          {me && (
+            <button className="btn-ghost" onClick={copyItem}>
+              {t('pack.copyItem')}
             </button>
           )}
         </div>

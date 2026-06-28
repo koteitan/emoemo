@@ -57,8 +57,19 @@
     "notFound": "Pack not found.",
     "noPacks": "You haven't created any packs yet.",
     "duplicate": "Duplicate to my own",
+    "copyItem": "Copy items individually",
     "copySuffix": " copy",
     "filterPlaceholder": "Filter emoji..."
+  },
+  "copyitem": {
+    "title": "Copy emoji individually",
+    "dest": "Destination",
+    "source": "Source",
+    "chooseDest": "First, choose the destination emoji pack.",
+    "clickToAdd": "Click an emoji to add it to the destination pack.",
+    "already": "Already in the pack",
+    "noPacks": "No destination pack. Create an emoji pack first.",
+    "save": "Save destination pack (kind:30030)"
   },
   "upload": {
     "button": "Upload image",

@@ -1,5 +1,6 @@
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
+import pkg from './package.json';
 
 // Content-Security-Policy injected into index.html for production builds only
 // (dev is skipped so Vite HMR's inline scripts keep working).
@@ -34,6 +35,8 @@ function cspMeta(): Plugin {
 export default defineConfig({
   base: '/emoemo/',
   plugins: [react(), cspMeta()],
+  // Expose package.json version to the app (shown in the footer).
+  define: { __APP_VERSION__: JSON.stringify(pkg.version) },
   // Bind to 0.0.0.0 so the WSL2 dev server is reachable from the Windows browser.
   server: { host: true },
 });

@@ -57,8 +57,19 @@
     "notFound": "パックが見つかりません。",
     "noPacks": "まだパックを作成していません。",
     "duplicate": "複製して自分用に",
+    "copyItem": "個別に複製",
     "copySuffix": " のコピー",
     "filterPlaceholder": "絵文字を絞り込む..."
+  },
+  "copyitem": {
+    "title": "絵文字を個別に複製",
+    "dest": "コピー先",
+    "source": "コピー元",
+    "chooseDest": "まずコピー先の絵文字パックを選んでください。",
+    "clickToAdd": "絵文字をクリックすると、コピー先のパックに追加されます。",
+    "already": "すでにパックにあります",
+    "noPacks": "コピー先がありません。先に絵文字パックを作成してください。",
+    "save": "コピー先パックを保存 (kind:30030)"
   },
   "upload": {
     "button": "画像をアップロード",
