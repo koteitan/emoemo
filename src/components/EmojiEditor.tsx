@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import type { Emoji } from '../nostr/emoji';
 import UploadButton from './UploadButton';
+import TransparencyButton from './TransparencyButton';
 import { EmojiImg } from './EmojiGrid';
 
 interface Props {
@@ -39,6 +40,7 @@ export default function EmojiEditor({ emojis, onChange }: Props) {
             onChange={(ev) => update(i, { url: ev.target.value })}
           />
           <UploadButton onUploaded={(url) => update(i, { url })} />
+          <TransparencyButton url={e.url} onProcessed={(url) => update(i, { url })} />
           <button type="button" className="btn-ghost danger" onClick={() => remove(i)}>
             {t('pack.remove')}
           </button>

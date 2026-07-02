@@ -77,6 +77,14 @@
     "orUrl": "or paste an image URL",
     "failed": "Upload failed"
   },
+  "transparency": {
+    "button": "Make edges transparent",
+    "title": "Make surroundings transparent",
+    "threshold": "Threshold",
+    "confirm": "Apply & upload",
+    "tainted": "Couldn't read this image. Images on other hosts may be blocked by CORS. Re-upload it first, then try again.",
+    "loadFailed": "Failed to load the image."
+  },
   "common": {
     "loading": "Loading...",
     "error": "Something went wrong.",
