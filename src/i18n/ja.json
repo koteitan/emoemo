@@ -58,6 +58,8 @@
     "noPacks": "まだパックを作成していません。",
     "duplicate": "複製して自分用に",
     "copyItem": "個別に複製",
+    "unsaved": "未保存の変更があります",
+    "unsavedLeave": "未保存の変更があります。このページを離れますか?",
     "copySuffix": " のコピー",
     "filterPlaceholder": "絵文字を絞り込む..."
   },

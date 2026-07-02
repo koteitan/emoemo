@@ -58,6 +58,8 @@
     "noPacks": "You haven't created any packs yet.",
     "duplicate": "Duplicate to my own",
     "copyItem": "Copy items individually",
+    "unsaved": "You have unsaved changes",
+    "unsavedLeave": "You have unsaved changes. Leave this page?",
     "copySuffix": " copy",
     "filterPlaceholder": "Filter emoji..."
   },

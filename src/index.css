@@ -601,6 +601,78 @@ section {
   padding: 0;
 }
 
+/* --- save reminder: sparkle nudge + unsaved hint --- */
+.save-btn-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.sparkle-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.sparkle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1em;
+  height: 1em;
+  margin: -0.5em 0 0 -0.5em;
+  font-size: 1.15rem;
+  line-height: 1;
+  will-change: transform, opacity;
+  animation: save-sparkle 2.4s ease-out forwards;
+}
+/* fly in from outside (0-20%) toward the button, then orbit it (20-100%) */
+@keyframes save-sparkle {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--a)) translateX(140px) rotate(calc(-1 * var(--a))) scale(0.5);
+  }
+  20% {
+    opacity: 1;
+    transform: rotate(var(--a)) translateX(54px) rotate(calc(-1 * var(--a))) scale(1);
+  }
+  85% {
+    opacity: 1;
+    transform: rotate(calc(var(--a) + 630deg)) translateX(54px)
+      rotate(calc(-1 * (var(--a) + 630deg))) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(calc(var(--a) + 720deg)) translateX(54px)
+      rotate(calc(-1 * (var(--a) + 720deg))) scale(0.5);
+  }
+}
+.btn.save-glow {
+  animation: save-glow 0.8s ease-in-out infinite alternate;
+}
+@keyframes save-glow {
+  from {
+    box-shadow: 0 0 0 0 rgba(255, 126, 182, 0);
+  }
+  to {
+    box-shadow: 0 0 16px 3px rgba(255, 126, 182, 0.7);
+  }
+}
+.unsaved-hint {
+  color: var(--accent);
+  font-size: 0.85rem;
+  margin-left: 0.7rem;
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sparkle {
+    animation: none;
+    display: none;
+  }
+  .btn.save-glow {
+    animation: none;
+    box-shadow: 0 0 14px 3px rgba(255, 126, 182, 0.6);
+  }
+}
+
 /* --- mobile header: keep PC layout, fix the cramped vertical nav --- */
 @media (max-width: 640px) {
   .header {

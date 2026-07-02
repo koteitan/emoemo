@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
@@ -52,6 +52,83 @@ export default function PackEdit({ mode }: { mode: 'new' | 'edit' }) {
     });
   }, [mode, params.pubkey, params.identifier, readRelays]);
 
+  // --- "save me" sparkle nudge -------------------------------------------
+  const [nudgeKey, setNudgeKey] = useState(0);
+  const [nudging, setNudging] = useState(false);
+  const nudgeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const nudgeSave = useCallback(() => {
+    setNudgeKey((k) => k + 1); // remount the sparkles so the animation replays
+    setNudging(true);
+    if (nudgeTimer.current) clearTimeout(nudgeTimer.current);
+    nudgeTimer.current = setTimeout(() => setNudging(false), 2600);
+  }, []);
+
+  useEffect(
+    () => () => {
+      if (nudgeTimer.current) clearTimeout(nudgeTimer.current);
+    },
+    [],
+  );
+
+  // Trigger 2: fire whenever the count of "complete" rows (shortcode + url both
+  // filled) changes -- i.e. the "both fields filled" proposition flips somewhere.
+  const completeCount = emojis.reduce((n, e) => n + (e.shortcode && e.url ? 1 : 0), 0);
+  const prevCompleteRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (loading) return;
+    if (prevCompleteRef.current === null) {
+      prevCompleteRef.current = completeCount; // establish baseline after load
+      return;
+    }
+    if (completeCount !== prevCompleteRef.current) {
+      prevCompleteRef.current = completeCount;
+      nudgeSave();
+    }
+  }, [completeCount, loading, nudgeSave]);
+
+  // --- unsaved-changes guard ---------------------------------------------
+  const currentSig = JSON.stringify({ title, identifier, emojis });
+  const baselineRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (loading) return;
+    if (baselineRef.current === null) baselineRef.current = currentSig; // baseline after load
+  }, [loading, currentSig]);
+  const dirty = baselineRef.current !== null && currentSig !== baselineRef.current;
+
+  // Warn on tab close / reload while there are unsaved edits.
+  useEffect(() => {
+    if (!dirty) return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = ''; // Chrome requires returnValue to be set
+    };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, [dirty]);
+
+  // Warn on in-app navigation: one delegated capture-phase listener catches any
+  // <a>/<Link> click. Cancelling preventDefault()s the event, so react-router's
+  // Link (which skips navigation when defaultPrevented) and the native hash
+  // change are both blocked. Links opening a new tab don't leave, so skip them.
+  useEffect(() => {
+    if (!dirty) return;
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = (e.target as HTMLElement | null)?.closest('a');
+      if (!a) return;
+      const target = a.getAttribute('target');
+      if ((target && target !== '_self') || a.hasAttribute('download')) return;
+      if (!window.confirm(t('pack.unsavedLeave'))) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+    };
+    document.addEventListener('click', onClick, true);
+    return () => document.removeEventListener('click', onClick, true);
+  }, [dirty, t]);
+
   if (!pubkey) return <p className="muted">{t('auth.loginRequired')}</p>;
   if (loading) return <Loading text={t('common.loading')} />;
 
@@ -91,14 +168,41 @@ export default function PackEdit({ mode }: { mode: 'new' | 'edit' }) {
       </label>
 
       <h2>{t('pack.emojis')}</h2>
-      <EmojiEditor emojis={emojis} onChange={setEmojis} />
+      <EmojiEditor emojis={emojis} onChange={setEmojis} onSaveNudge={nudgeSave} />
 
       <div className="save-bar">
-        <button className="btn" disabled={saving || !identifier} onClick={onSave}>
-          {t('pack.save')}
-        </button>
+        <span className="save-btn-wrap">
+          <button
+            className={`btn${nudging ? ' save-glow' : ''}`}
+            disabled={saving || !identifier}
+            onClick={onSave}
+          >
+            {t('pack.save')}
+          </button>
+          {nudging && <SaveSparkle key={nudgeKey} />}
+        </span>
+        {dirty && <span className="unsaved-hint">{t('pack.unsaved')}</span>}
         {status && <span className="status">{status}</span>}
       </div>
     </div>
+  );
+}
+
+const SPARKS = [0, 1, 2, 3, 4, 5];
+
+// Sparkles that fly into the save button and then orbit it to nag the user.
+function SaveSparkle() {
+  return (
+    <span className="sparkle-layer" aria-hidden="true">
+      {SPARKS.map((i) => (
+        <span
+          key={i}
+          className="sparkle"
+          style={{ '--a': `${(360 / SPARKS.length) * i}deg` } as CSSProperties}
+        >
+          ✨
+        </span>
+      ))}
+    </span>
   );
 }
