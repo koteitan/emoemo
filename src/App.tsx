@@ -4,6 +4,7 @@ import Browse from './pages/Browse';
 import MyList from './pages/MyList';
 import MyPacks from './pages/MyPacks';
 import PackView from './pages/PackView';
+import PackAddr from './pages/PackAddr';
 import PackEdit from './pages/PackEdit';
 import CopyItem from './pages/CopyItem';
 
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/me/packs" element={<MyPacks />} />
           <Route path="/pack/new" element={<PackEdit mode="new" />} />
           <Route path="/pack/copyitem/:pubkey/:identifier" element={<CopyItem />} />
+          <Route path="/a/:naddr" element={<PackAddr />} />
           <Route path="/pack/:pubkey/:identifier" element={<PackView />} />
           <Route path="/pack/:pubkey/:identifier/edit" element={<PackEdit mode="edit" />} />
         </Routes>

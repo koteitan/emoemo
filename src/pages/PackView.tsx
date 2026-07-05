@@ -9,12 +9,24 @@ import EmojiGrid from '../components/EmojiGrid';
 import Loading from '../components/Loading';
 import { shortNpub } from '../nostr/nip19';
 
-export default function PackView() {
+interface PackViewProps {
+  // When rendered from an naddr link the source coordinate and relay hints are
+  // passed in directly; otherwise they come from the /pack/:pubkey/:identifier route.
+  pubkey?: string;
+  identifier?: string;
+  relayHints?: string[];
+}
+
+export default function PackView({
+  pubkey: pubkeyProp,
+  identifier: identifierProp,
+  relayHints,
+}: PackViewProps = {}) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const params = useParams();
-  const pubkey = params.pubkey!;
-  const identifier = decodeURIComponent(params.identifier!);
+  const pubkey = pubkeyProp ?? params.pubkey!;
+  const identifier = identifierProp ?? decodeURIComponent(params.identifier!);
   const { pubkey: me, readRelays, login } = useAuth();
   const list = useEmojiList();
   const { get, ensure } = useProfiles();
@@ -25,11 +37,17 @@ export default function PackView() {
 
   useEffect(() => {
     setLoading(true);
-    fetchPack({ pubkey, identifier }, readRelays).then((p) => {
+    // Seed the fetch with the naddr's relay hints so sets that live on relays
+    // the user doesn't normally read still resolve.
+    const relays =
+      relayHints && relayHints.length
+        ? [...new Set([...readRelays, ...relayHints])]
+        : readRelays;
+    fetchPack({ pubkey, identifier }, relays).then((p) => {
       setPack(p);
       setLoading(false);
     });
-  }, [pubkey, identifier, readRelays]);
+  }, [pubkey, identifier, readRelays, relayHints]);
 
   useEffect(() => {
     ensure([pubkey]);
