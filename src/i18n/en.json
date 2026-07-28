@@ -83,6 +83,9 @@
     "button": "Make edges transparent",
     "title": "Make surroundings transparent",
     "threshold": "Threshold",
+    "sameColor": "Also clear every pixel matching the background color",
+    "clickHint": "Click the image to also clear the connected region at that point",
+    "resetClicks": "Reset click selections ({{count}})",
     "confirm": "Apply & upload",
     "tainted": "Couldn't read this image. Images on other hosts may be blocked by CORS. Re-upload it first, then try again.",
     "loadFailed": "Failed to load the image."

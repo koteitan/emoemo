@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { uploadToNostrBuild } from '../upload/nostrBuild';
-import { removeEdgeBackground } from '../util/transparency';
+import { buildTransparent } from '../util/transparency';
 
 const DEFAULT_THRESHOLD = 40;
 const MAX_THRESHOLD = 150;
@@ -52,6 +52,8 @@ function TransparencyModal({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [threshold, setThreshold] = useState(DEFAULT_THRESHOLD);
+  const [sameColor, setSameColor] = useState(false);
+  const [clicks, setClicks] = useState<{ x: number; y: number }[]>([]);
   const [uploading, setUploading] = useState(false);
 
   // Load the source image once into an offscreen ImageData.
@@ -92,16 +94,29 @@ function TransparencyModal({
     };
   }, [url, t]);
 
-  // Re-render the preview whenever the threshold changes (or once loaded).
+  // Re-render the preview whenever any option changes (or once loaded).
   useEffect(() => {
     const orig = originalRef.current;
     const canvas = canvasRef.current;
     if (loading || error || !orig || !canvas) return;
-    const processed = removeEdgeBackground(orig, threshold);
+    const processed = buildTransparent(orig, { threshold, globalSameColor: sameColor, clicks });
     canvas.width = processed.width;
     canvas.height = processed.height;
     canvas.getContext('2d')?.putImageData(processed, 0, 0);
-  }, [threshold, loading, error]);
+  }, [threshold, sameColor, clicks, loading, error]);
+
+  // Map a click on the (CSS-scaled) canvas to an original-image pixel and add it
+  // as a flood-fill seed, so the pointed island gets cleared too.
+  function onCanvasClick(e: React.MouseEvent<HTMLCanvasElement>) {
+    const canvas = canvasRef.current;
+    const orig = originalRef.current;
+    if (!canvas || !orig || uploading) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.floor((e.clientX - rect.left) * (orig.width / rect.width));
+    const y = Math.floor((e.clientY - rect.top) * (orig.height / rect.height));
+    if (x < 0 || y < 0 || x >= orig.width || y >= orig.height) return;
+    setClicks((prev) => [...prev, { x, y }]);
+  }
 
   async function confirm() {
     const canvas = canvasRef.current;
@@ -123,7 +138,7 @@ function TransparencyModal({
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <div className="modal transp-modal" onClick={(e) => e.stopPropagation()}>
         <h3>{t('transparency.title')}</h3>
 
         {error ? (
@@ -133,8 +148,33 @@ function TransparencyModal({
         ) : (
           <>
             <div className="transp-preview checker">
-              <canvas ref={canvasRef} />
+              <canvas ref={canvasRef} onClick={onCanvasClick} />
             </div>
+            <p className="transp-hint">
+              {t('transparency.clickHint')}
+              {clicks.length > 0 && (
+                <>
+                  {' · '}
+                  <button
+                    type="button"
+                    className="transp-reset"
+                    disabled={uploading}
+                    onClick={() => setClicks([])}
+                  >
+                    {t('transparency.resetClicks', { count: clicks.length })}
+                  </button>
+                </>
+              )}
+            </p>
+            <label className="transp-option">
+              <input
+                type="checkbox"
+                checked={sameColor}
+                disabled={uploading}
+                onChange={(e) => setSameColor(e.target.checked)}
+              />
+              <span>{t('transparency.sameColor')}</span>
+            </label>
             <label className="transp-threshold">
               <span>
                 {t('transparency.threshold')}: {threshold}

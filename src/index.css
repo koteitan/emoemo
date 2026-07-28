@@ -573,11 +573,42 @@ section {
   min-height: 120px;
 }
 .transp-preview canvas {
-  max-width: 256px;
-  max-height: 256px;
-  width: auto;
+  width: 100%;
+  max-width: 512px;
   height: auto;
-  image-rendering: auto;
+  image-rendering: pixelated;
+  cursor: crosshair;
+}
+.modal.transp-modal {
+  width: min(560px, 100%);
+}
+.transp-hint {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0.6rem 0 0;
+}
+.transp-reset {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0;
+  text-decoration: underline;
+}
+.transp-reset:disabled {
+  color: var(--muted);
+  cursor: default;
+}
+.transp-option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+  font-size: 0.9rem;
+}
+.transp-option input {
+  width: auto;
 }
 /* checkerboard so transparent areas are visible in the preview */
 .checker {
