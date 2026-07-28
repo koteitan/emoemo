@@ -130,6 +130,8 @@ h2 {
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -143,6 +145,8 @@ h2 {
   border: 1px solid var(--border);
   padding: 0.45rem 0.8rem;
   border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
   cursor: pointer;
 }
 .btn-ghost:hover {
@@ -216,6 +220,10 @@ h2 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.pack-actions > * {
+  white-space: nowrap;
 }
 .badge {
   color: #6ee7a8;
@@ -709,6 +717,26 @@ section {
   .header {
     gap: 0.5rem 0.6rem;
     padding: 0.6rem 0.8rem;
+  }
+  /* stack title above the action buttons so they get the full width and wrap
+     instead of overflowing off the right edge */
+  .page-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  /* lay the actions out as an equal-width 2-column grid so the buttons line up
+     cleanly; the status badge spans the full width on its own row */
+  .pack-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+  .pack-actions > * {
+    width: 100%;
+    text-align: center;
+  }
+  .pack-actions .badge {
+    grid-column: 1 / -1;
   }
   /* row 1: emoemo  EN  [icon]  logout (all on one line) */
   .header-right {
