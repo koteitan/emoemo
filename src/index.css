@@ -234,6 +234,12 @@ h2 {
   white-space: nowrap;
 }
 
+.load-more {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0 0.5rem;
+}
+
 /* search */
 .search-bar {
   display: flex;

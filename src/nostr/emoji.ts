@@ -141,12 +141,17 @@ export async function fetchPacksByAuthors(authors: string[], relays: string[]): 
     .filter((p) => p.emojis.length > 0);
 }
 
-// Browse recent emoji sets across relays.
-export async function fetchRecentPacks(relays: string[], limit = 100): Promise<EmojiPack[]> {
-  const events = await fetchEvents([{ kinds: [KIND_EMOJI_SET], limit }], {
-    relays,
-    timeoutMs: 6000,
-  });
+// Browse recent emoji sets across relays. Pass `until` (a created_at seconds
+// cursor) to page backward through older sets for lazy loading.
+export async function fetchRecentPacks(
+  relays: string[],
+  limit = 100,
+  until?: number,
+): Promise<EmojiPack[]> {
+  const filter = until
+    ? { kinds: [KIND_EMOJI_SET], limit, until }
+    : { kinds: [KIND_EMOJI_SET], limit };
+  const events = await fetchEvents([filter], { relays, timeoutMs: 6000 });
   return dedupeReplaceable(events)
     .map(parsePack)
     .filter((p) => p.emojis.length > 0)
