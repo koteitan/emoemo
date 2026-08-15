@@ -21,9 +21,9 @@ export default function Header() {
         <NavLink to="/" end>
           {t('nav.browse')}
         </NavLink>
-        {pubkey && <NavLink to="/me">{t('nav.myList')}</NavLink>}
-        {pubkey && <NavLink to="/me/packs">{t('nav.myPacks')}</NavLink>}
-        {pubkey && <NavLink to="/pack/new">{t('nav.newPack')}</NavLink>}
+        {pubkey && <NavLink to="/me/list">{t('nav.myList')}</NavLink>}
+        {pubkey && <NavLink to="/me/sets">{t('nav.myPacks')}</NavLink>}
+        {pubkey && <NavLink to="/set/new">{t('nav.newPack')}</NavLink>}
       </nav>
 
       <div className="header-right">

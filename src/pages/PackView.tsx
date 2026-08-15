@@ -11,7 +11,7 @@ import { shortNpub } from '../nostr/nip19';
 
 interface PackViewProps {
   // When rendered from an naddr link the source coordinate and relay hints are
-  // passed in directly; otherwise they come from the /pack/:pubkey/:identifier route.
+  // passed in directly; otherwise they come from the /set/:pubkey/:identifier route.
   pubkey?: string;
   identifier?: string;
   relayHints?: string[];
@@ -63,7 +63,7 @@ export default function PackView({
 
   function duplicate() {
     if (!pack) return;
-    navigate('/pack/new', {
+    navigate('/set/new', {
       state: { fork: { title: pack.title + t('pack.copySuffix'), emojis: pack.emojis } },
     });
   }
@@ -72,7 +72,7 @@ export default function PackView({
     if (!pack) return;
     // Source pubkey/identifier live in the URL so the page survives a reload;
     // the pack data is also passed via state to render instantly when arriving here.
-    navigate(`/pack/copyitem/${pubkey}/${encodeURIComponent(identifier)}`, {
+    navigate(`/set/copyitem/${pubkey}/${encodeURIComponent(identifier)}`, {
       state: { source: { pubkey, identifier, title: pack.title, emojis: pack.emojis } },
     });
   }
@@ -121,7 +121,7 @@ export default function PackView({
           {isOwner && (
             <Link
               className="btn-ghost"
-              to={`/pack/${pubkey}/${encodeURIComponent(identifier)}/edit`}
+              to={`/set/${pubkey}/${encodeURIComponent(identifier)}/edit`}
             >
               {t('common.edit')}
             </Link>

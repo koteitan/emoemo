@@ -66,7 +66,7 @@ export default function MyList() {
             {packs.filter((p) => packMatchesQuery(p, query)).map((p) => (
               <div key={`${p.pubkey}:${p.identifier}`} className="pack-card-wrap">
                 <Link
-                  to={`/pack/${p.pubkey}/${encodeURIComponent(p.identifier)}`}
+                  to={`/set/${p.pubkey}/${encodeURIComponent(p.identifier)}`}
                   className="pack-card"
                 >
                   <div className="pack-card-head">

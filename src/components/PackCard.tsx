@@ -14,7 +14,7 @@ export default function PackCard({ pack }: { pack: EmojiPack }) {
   const { pubkey: me, login } = useAuth();
   const list = useEmojiList();
   const [saving, setSaving] = useState(false);
-  const to = `/pack/${pack.pubkey}/${encodeURIComponent(pack.identifier)}`;
+  const to = `/set/${pack.pubkey}/${encodeURIComponent(pack.identifier)}`;
 
   useEffect(() => {
     ensure([pack.pubkey]);

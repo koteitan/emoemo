@@ -127,7 +127,7 @@ export default function CopyItem() {
         writeRelays,
       );
       setStatus(t('common.publishedTo', { count: relays.length }));
-      navigate(`/pack/${me}/${encodeURIComponent(selected.identifier)}`);
+      navigate(`/set/${me}/${encodeURIComponent(selected.identifier)}`);
     } catch (err) {
       setStatus(err instanceof Error ? err.message : t('common.error'));
     } finally {

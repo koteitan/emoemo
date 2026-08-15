@@ -23,7 +23,7 @@ export default function PackEdit({ mode }: { mode: 'new' | 'edit' }) {
   const location = useLocation();
   const { pubkey, readRelays, writeRelays } = useAuth();
 
-  // When forking another pack, /pack/new is opened with prefilled fork data.
+  // When forking another set, /set/new is opened with prefilled fork data.
   const fork =
     mode === 'new'
       ? (location.state as { fork?: { title: string; emojis: Emoji[] } } | null)?.fork
@@ -140,7 +140,7 @@ export default function PackEdit({ mode }: { mode: 'new' | 'edit' }) {
       const tags = buildPackTags({ identifier, title, emojis: clean });
       const relays = await publishEvent({ kind: KIND_EMOJI_SET, content: '', tags }, writeRelays);
       setStatus(t('common.publishedTo', { count: relays.length }));
-      navigate(`/pack/${pubkey}/${encodeURIComponent(identifier)}`);
+      navigate(`/set/${pubkey}/${encodeURIComponent(identifier)}`);
     } catch (e) {
       setStatus(e instanceof Error ? e.message : t('common.error'));
     } finally {
