@@ -3,8 +3,19 @@ import { useTranslation } from 'react-i18next';
 import { uploadToNostrBuild } from '../upload/nostrBuild';
 import { buildTransparent } from '../util/transparency';
 
-const DEFAULT_THRESHOLD = 40;
-const MAX_THRESHOLD = 150;
+// The threshold slider is shown as 0-100% but the actual color distance grows
+// EXPONENTIALLY with the slider, so the low end has fine resolution:
+//   0% -> 0, 1% -> r^0, 2% -> r^1, ..., 100% -> r^(STEPS-1) = MAX_DISTANCE
+// MAX_DISTANCE is 443 -- just past the full RGB diagonal (black<->white =
+// 255*sqrt(3) ~= 441.67) so the farthest pair still matches despite float rounding.
+const MAX_DISTANCE = 443;
+const STEPS = 100;
+const RATIO = Math.pow(MAX_DISTANCE, 1 / (STEPS - 1)); // r = 443^(1/99)
+const DEFAULT_PERCENT = 60;
+
+function percentToDistance(p: number): number {
+  return p <= 0 ? 0 : Math.pow(RATIO, p - 1);
+}
 
 // "周辺透明化": clear the edge-connected background of an emoji image, preview
 // the result with an adjustable threshold, then re-upload and swap the URL.
@@ -51,7 +62,7 @@ function TransparencyModal({
   const originalRef = useRef<ImageData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [threshold, setThreshold] = useState(DEFAULT_THRESHOLD);
+  const [percent, setPercent] = useState(DEFAULT_PERCENT);
   const [sameColor, setSameColor] = useState(false);
   const [clicks, setClicks] = useState<{ x: number; y: number }[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -99,11 +110,12 @@ function TransparencyModal({
     const orig = originalRef.current;
     const canvas = canvasRef.current;
     if (loading || error || !orig || !canvas) return;
+    const threshold = percentToDistance(percent);
     const processed = buildTransparent(orig, { threshold, globalSameColor: sameColor, clicks });
     canvas.width = processed.width;
     canvas.height = processed.height;
     canvas.getContext('2d')?.putImageData(processed, 0, 0);
-  }, [threshold, sameColor, clicks, loading, error]);
+  }, [percent, sameColor, clicks, loading, error]);
 
   // Map a click on the (CSS-scaled) canvas to an original-image pixel and add it
   // as a flood-fill seed, so the pointed island gets cleared too.
@@ -177,15 +189,15 @@ function TransparencyModal({
             </label>
             <label className="transp-threshold">
               <span>
-                {t('transparency.threshold')}: {threshold}
+                {t('transparency.threshold')}: {percent}%
               </span>
               <input
                 type="range"
                 min={0}
-                max={MAX_THRESHOLD}
-                value={threshold}
+                max={100}
+                value={percent}
                 disabled={uploading}
-                onChange={(e) => setThreshold(Number(e.target.value))}
+                onChange={(e) => setPercent(Number(e.target.value))}
               />
             </label>
           </>
