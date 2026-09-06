@@ -3,6 +3,7 @@ import { loginNip07, hasNip07 } from '../nostr/nip07';
 import { fetchRelayList, readRelays, writeRelays, type RelayEntry } from '../nostr/core';
 import { fetchProfile, type Profile } from '../nostr/profile';
 import { fallbackRelays } from '../nostr/relays';
+import { loadState, updateState } from '../utils/storage';
 
 interface AuthState {
   pubkey: string | null;
@@ -18,8 +19,6 @@ interface AuthState {
 }
 
 const AuthContext = createContext<AuthState | null>(null);
-
-const STORAGE_KEY = 'emoemo:loggedIn';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [pubkey, setPubkey] = useState<string | null>(null);
@@ -43,7 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setError(null);
     try {
       const pk = await loginNip07();
-      localStorage.setItem(STORAGE_KEY, '1');
+      updateState({ loggedIn: true });
       await hydrate(pk);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'login failed');
@@ -53,7 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   function logout() {
-    localStorage.removeItem(STORAGE_KEY);
+    updateState({ loggedIn: false });
     setPubkey(null);
     setProfile(null);
     setRelays([]);
@@ -77,11 +76,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Auto re-login once the extension is available and the user logged in before.
   useEffect(() => {
-    if (!hasExtension || pubkey || localStorage.getItem(STORAGE_KEY) !== '1') return;
+    if (!hasExtension || pubkey || !loadState().loggedIn) return;
     setLoading(true);
     loginNip07()
       .then(hydrate)
-      .catch(() => localStorage.removeItem(STORAGE_KEY))
+      .catch(() => updateState({ loggedIn: false }))
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasExtension]);
